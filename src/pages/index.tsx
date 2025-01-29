@@ -1,5 +1,10 @@
-import Head from "next/head";
-import { Button } from "~/components/ui/button";
+"use client"
+
+import * as React from "react"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
+import { Maximize2, Minimize2 } from 'lucide-react'
+import { Button } from "~/components/ui/button"
+import { ScrollArea } from "~/components/ui/scroll-area"
 
 export default function Home() {
     return (
