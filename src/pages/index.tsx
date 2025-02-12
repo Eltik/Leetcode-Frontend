@@ -1,8 +1,7 @@
-
 import Head from "next/head"
 import OutputArea from "~/components/output-area"
 import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/testing";
-
+import Leaderboard from "~/components/leaderboard/Leaderboard";
 
 const HomePage = () => {
     return (
@@ -17,6 +16,7 @@ const HomePage = () => {
                 <OutputArea data={"yeahgytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagyta sigma"}>
 
                 </OutputArea>
+                <Leaderboard />
             </main>
         </>
 

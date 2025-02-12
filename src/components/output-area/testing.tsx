@@ -1,5 +1,6 @@
 import * as React from "react"
 import Image from "next/image"
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
  
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area"
  
@@ -22,6 +23,21 @@ export const works: Artwork[] = [
     art: "https://images.unsplash.com/photo-1494337480532-3725c85fd2ab?auto=format&fit=crop&w=300&q=80",
   },
 ]
+ 
+export function TabsDemo() {
+  return (
+    <Tabs defaultValue="tab1" className="w-full">
+      <TabsList>
+        <TabsTrigger value="tab1">Tab 1</TabsTrigger>
+        <TabsTrigger value="tab2">Tab 2</TabsTrigger>
+        <TabsTrigger value="tab3">Tab 3</TabsTrigger>
+      </TabsList>
+      <TabsContent value="tab1">Content for Tab 1</TabsContent>
+      <TabsContent value="tab2">Content for Tab 2</TabsContent>
+      <TabsContent value="tab3">Content for Tab 3</TabsContent>
+    </Tabs>
+  )
+}
  
 export function ScrollAreaHorizontalDemo() {
   return (
