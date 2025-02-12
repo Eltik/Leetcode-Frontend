@@ -1,10 +1,6 @@
-"use client"
-
-import * as React from "react"
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "~/components/ui/tabs"
-import { Maximize2, Minimize2 } from 'lucide-react'
-import { Button } from "~/components/ui/button"
-import { ScrollArea } from "~/components/ui/scroll-area"
+import Head from "next/head"
+import OutputArea from "~/components/output-area"
+import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/testing";
 
 export default function Home() {
     return (
@@ -15,8 +11,9 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-                <Button>Test</Button>
-                <p>test</p>
+                <OutputArea data={"yeahgytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagytagyta sigma"}>
+
+                </OutputArea>
             </main>
         </>
     );
