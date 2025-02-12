@@ -1,9 +1,12 @@
+
 import Head from "next/head"
 import OutputArea from "~/components/output-area"
 import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/testing";
 
-export default function Home() {
+
+const HomePage = () => {
     return (
+
         <>
             <Head>
                 <title>Create T3 App</title>
@@ -16,5 +19,8 @@ export default function Home() {
                 </OutputArea>
             </main>
         </>
+
     );
-}
+};
+
+export default HomePage;
