@@ -2,6 +2,7 @@ import Head from "next/head"
 import OutputArea from "~/components/output-area"
 import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/testing";
 import Leaderboard from "~/components/leaderboard/Leaderboard";
+import QuestionArea from "~/components/question-area";
 
 const HomePage = () => {
     return (
@@ -17,6 +18,7 @@ const HomePage = () => {
 
                 </OutputArea>
                 <Leaderboard />
+                <QuestionArea />
             </main>
         </>
 
