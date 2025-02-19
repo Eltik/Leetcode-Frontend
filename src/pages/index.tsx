@@ -19,10 +19,6 @@ const HomePage = () => {
                 } />
                 <Leaderboard />
                 <QuestionArea />
-
-                <div className="bg-red">
-                    <p>This is some text</p>
-                </div>
             </main>
         </>
 
