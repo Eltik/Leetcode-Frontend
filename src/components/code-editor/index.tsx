@@ -17,7 +17,7 @@ interface FileStructure {
 const defaultFile: FileStructure = {
     name: "example.js",
     content: "// Write your code here\nconsole.log('Hello World!');",
-    language: "javascript"
+    language: "javascript",
 };
 
 const defaultFiles: FileStructure[] = [defaultFile];
@@ -40,21 +40,21 @@ export default function CodeEditor() {
         if (!value) return;
         const updatedFile = { ...currentFile, content: value };
         setCurrentFile(updatedFile);
-        setFiles(files.map(f => f.name === updatedFile.name ? updatedFile : f));
+        setFiles(files.map((f) => (f.name === updatedFile.name ? updatedFile : f)));
     };
 
     const handleLanguageChange = (language: string) => {
         const updatedFile = { ...currentFile, language };
         setCurrentFile(updatedFile);
-        setFiles(files.map(f => f.name === updatedFile.name ? updatedFile : f));
+        setFiles(files.map((f) => (f.name === updatedFile.name ? updatedFile : f)));
     };
 
     const handleDeleteFile = (fileToDelete: FileStructure, e: React.MouseEvent) => {
         e.stopPropagation();
-        const newFiles = files.filter(f => f.name !== fileToDelete.name);
+        const newFiles = files.filter((f) => f.name !== fileToDelete.name);
         if (newFiles.length === 0) return;
         setFiles(newFiles);
-        
+
         // If we're deleting the current file, switch to the first remaining file
         if (currentFile.name === fileToDelete.name) {
             setCurrentFile(newFiles[0]!); // This is safe because we checked newFiles.length > 0
@@ -62,12 +62,7 @@ export default function CodeEditor() {
     };
 
     const Sidebar = () => (
-        <div className={cn(
-            "absolute inset-y-0 left-0 z-20 w-64 transform border-r border-border bg-card transition-transform duration-300 ease-in-out md:static md:translate-x-0",
-            isSidebarOpen 
-                ? "translate-x-0 scale-x-100" 
-                : "-translate-x-full scale-x-95 md:scale-x-100"
-        )}>
+        <div className={cn("absolute inset-y-0 left-0 z-20 w-64 transform border-r border-border bg-card transition-transform duration-300 ease-in-out md:static md:translate-x-0", isSidebarOpen ? "translate-x-0 scale-x-100" : "-translate-x-full scale-x-95 md:scale-x-100")}>
             <ScrollArea className="h-full">
                 <Accordion type="single" collapsible className="w-full">
                     {/* File Explorer */}
@@ -87,20 +82,14 @@ export default function CodeEditor() {
                                             setCurrentFile(file);
                                             setIsSidebarOpen(false);
                                         }}
-                                        className={cn(
-                                            "flex w-full items-center justify-between rounded-md px-4 py-2 text-left text-sm hover:bg-accent",
-                                            currentFile.name === file.name && "bg-accent"
-                                        )}
+                                        className={cn("flex w-full items-center justify-between rounded-md px-4 py-2 text-left text-sm hover:bg-accent", currentFile.name === file.name && "bg-accent")}
                                     >
                                         <div className="flex items-center gap-2">
                                             <Code2 className="h-4 w-4" />
                                             {file.name}
                                         </div>
                                         {files.length > 1 && (
-                                            <button
-                                                onClick={(e) => handleDeleteFile(file, e)}
-                                                className="rounded-sm opacity-0 hover:opacity-100 group-hover:opacity-100"
-                                            >
+                                            <button onClick={(e) => handleDeleteFile(file, e)} className="rounded-sm opacity-0 hover:opacity-100 group-hover:opacity-100">
                                                 <X className="h-4 w-4" />
                                             </button>
                                         )}
@@ -122,10 +111,7 @@ export default function CodeEditor() {
                             <div className="space-y-4 p-4">
                                 <div className="space-y-2">
                                     <label className="text-sm font-medium">Theme</label>
-                                    <button
-                                        onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")}
-                                        className="w-full rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground"
-                                    >
+                                    <button onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")} className="w-full rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground">
                                         {theme === "vs-dark" ? "Switch to Light Theme" : "Switch to Dark Theme"}
                                     </button>
                                 </div>
@@ -146,27 +132,21 @@ export default function CodeEditor() {
         <div className="flex h-screen w-full flex-col bg-background">
             {/* Top Bar */}
             <div className="flex h-14 items-center border-b px-4">
-                <button
-                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                    className="mr-4 md:hidden"
-                >
+                <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="mr-4 md:hidden">
                     <Menu className="h-6 w-6" />
                 </button>
                 <div className="flex items-center space-x-4">
-                    <span className="text-sm font-medium hidden md:inline">Current File:</span>
+                    <span className="hidden text-sm font-medium md:inline">Current File:</span>
                     {/* Language Dropdown for Mobile */}
                     <DropdownMenu>
                         <DropdownMenuTrigger className="flex items-center gap-2 rounded-md bg-muted px-3 py-1 text-sm md:hidden">
                             <Code2 className="h-4 w-4" />
-                            {supportedLanguages.find(lang => lang.value === currentFile.language)?.label}
+                            {supportedLanguages.find((lang) => lang.value === currentFile.language)?.label}
                             <ChevronDown className="h-4 w-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent>
                             {supportedLanguages.map((lang) => (
-                                <DropdownMenuItem
-                                    key={lang.value}
-                                    onClick={() => handleLanguageChange(lang.value)}
-                                >
+                                <DropdownMenuItem key={lang.value} onClick={() => handleLanguageChange(lang.value)}>
                                     <div className="flex items-center gap-2">
                                         <Code2 className="h-4 w-4" />
                                         <span className="text-sm">{lang.label}</span>
@@ -176,16 +156,12 @@ export default function CodeEditor() {
                         </DropdownMenuContent>
                     </DropdownMenu>
                     {/* Language Tabs for Desktop */}
-                    <div className="hidden md:block max-w-[50vw]">
+                    <div className="hidden max-w-[50vw] md:block">
                         <Tabs value={currentFile.language} onValueChange={handleLanguageChange}>
                             <ScrollArea className="w-full">
                                 <TabsList className="inline-flex min-w-full border-b-0">
                                     {supportedLanguages.map((lang) => (
-                                        <TabsTrigger
-                                            key={lang.value}
-                                            value={lang.value}
-                                            className="flex items-center gap-2 shrink-0"
-                                        >
+                                        <TabsTrigger key={lang.value} value={lang.value} className="flex shrink-0 items-center gap-2">
                                             <Code2 className="h-4 w-4" />
                                             <span className="text-sm">{lang.label}</span>
                                         </TabsTrigger>
@@ -197,10 +173,7 @@ export default function CodeEditor() {
                     </div>
                 </div>
                 <div className="ml-auto flex items-center space-x-2">
-                    <button
-                        onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")}
-                        className="rounded-md bg-primary p-2 text-primary-foreground"
-                    >
+                    <button onClick={() => setTheme(theme === "vs-dark" ? "light" : "vs-dark")} className="rounded-md bg-primary p-2 text-primary-foreground">
                         {theme === "vs-dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
                     </button>
                 </div>
@@ -208,17 +181,9 @@ export default function CodeEditor() {
 
             <div className="relative flex flex-1">
                 <Sidebar />
-                
+
                 {/* Overlay for mobile sidebar */}
-                <div
-                    className={cn(
-                        "fixed inset-0 z-10 bg-background/80 backdrop-blur-sm transition-transform duration-300 ease-in-out md:hidden",
-                        isSidebarOpen 
-                            ? "translate-x-0" 
-                            : "-translate-x-full"
-                    )}
-                    onClick={() => setIsSidebarOpen(false)}
-                />
+                <div className={cn("fixed inset-0 z-10 bg-background/80 backdrop-blur-sm transition-transform duration-300 ease-in-out md:hidden", isSidebarOpen ? "translate-x-0" : "-translate-x-full")} onClick={() => setIsSidebarOpen(false)} />
 
                 {/* Editor */}
                 <div className="relative flex-1">
