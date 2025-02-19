@@ -19,6 +19,10 @@ const HomePage = () => {
                 } />
                 <Leaderboard />
                 <QuestionArea />
+
+                <div className="bg-red">
+                    <p>I like text</p>
+                </div>
             </main>
         </>
 
