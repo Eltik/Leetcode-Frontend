@@ -3,15 +3,15 @@ import { Button } from "~/components/ui/button"
 export default function QuestionArea() {
     return (
         <>
-            <div className="bg-[#2F2F2F] text-white text-sm rounded-md p-5 border-[#3C3C3C] w-[80%] mx-auto">
-                <h1 className="text-2xl font-bold">Two Sum</h1>
+            <div className="bg-[#2F2F2F] text-white text-sm rounded-md p-5 border-[#3C3C3C] w-[95%] mx-auto">
+                <h1 className="text-2xl font-bold mt-2">Two Sum</h1>
                 <h2 className="text-green-500 text-lg">Easy</h2>
                 
                 <br></br>
                 <hr></hr>
                 <br></br>
 
-                <div className=" ml-6 mr-4">
+                <div className="ml-6 mr-4">
                     <p className="mb-3">Given an array of integers <code className="border-white">nums</code> and an integer <code>target</code>, return <em>indices of the two numbers such that they add up to <code>target</code>.</em></p>
                     <p>You may assume that each input would have <b><em>exactly</em> one solution</b>, and you may not use the same element twice.</p>  
                 </div>
