@@ -34,6 +34,7 @@ export default function InputArea({ problemData }: QuestionAreaProps) {
       const result = eval(fullCode);
       if (result === problemData.solution) {
         setOutput(`Congratulations! Your solution is correct!`);
+        
       } else {
         setOutput("Incorrect solution, try again!");
       }
@@ -46,7 +47,7 @@ export default function InputArea({ problemData }: QuestionAreaProps) {
     <div className="bg-[#2F2F2F] text-white text-sm rounded-md p-5 border-[#3C3C3C] w-[95%] mx-auto">
       <h3 className="font-semibold text-lg mb-2">Your Solution:</h3>
       <textarea 
-        className="w-full h-48 bg-[#1F1F1F] text-white p-3 rounded-md font-mono"
+        className="w-full h-96 bg-[#1F1F1F] text-white p-3 rounded-md font-mono"
         placeholder="Write your solution here..."
         value={code}
         onChange={(e) => setCode(e.target.value)}
