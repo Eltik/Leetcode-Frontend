@@ -2,11 +2,11 @@ import React from 'react';
 
 const Leaderboard = () => {
     const data = [
-        { rank: 1, name: 'Alice', currentPoints: 50, totalPoints: 100 },
-        { rank: 2, name: 'Bob', currentPoints: 40, totalPoints: 90 },
-        { rank: 3, name: 'Charlie', currentPoints: 30, totalPoints: 80 },
-        { rank: 4, name: 'Diana', currentPoints: 20, totalPoints: 70 },
-        { rank: 5, name: 'Eve', currentPoints: 10, totalPoints: 60 },
+        { rank: 1, name: 'Alice' },
+        { rank: 2, name: 'Bob' },
+        { rank: 3, name: 'Charlie' },
+        { rank: 4, name: 'Diana' },
+        { rank: 5, name: 'Eve' },
     ];
 
     return (
@@ -21,8 +21,6 @@ const Leaderboard = () => {
                         <tr className="text-[#B7B7B7]">
                             <th className="p-3">Rank</th>
                             <th className="p-3">Name</th>
-                            <th className="p-3">Current Points</th>
-                            <th className="p-3">Total Points</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,8 +28,6 @@ const Leaderboard = () => {
                             <tr key={entry.rank} className="bg-[#3C3C3C] rounded-md">
                                 <td className="p-3">{entry.rank}</td>
                                 <td className="p-3">{entry.name}</td>
-                                <td className="p-3">{entry.currentPoints}</td>
-                                <td className="p-3">{entry.totalPoints}</td>
                             </tr>
                         ))}
                     </tbody>
