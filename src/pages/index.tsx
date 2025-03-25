@@ -21,7 +21,8 @@ const HomePage = ({ problemData }) => {
                     <QuestionArea problemData={problemData} />
                 </div>
                 <div className="mt-4">
-                    <InputArea />
+                    {console.log('problemData:', problemData)}
+                    <InputArea problemData={problemData}/>
                     <OutputArea data={""} />
                 </div>
             </main>
