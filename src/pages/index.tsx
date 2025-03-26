@@ -10,6 +10,7 @@ interface ProblemData {
   name: string;
   description: string;
   parameter: string;
+  hints: string[];
   providedCode: string;
   testcase: string;
   solution: any;
@@ -130,7 +131,7 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                                 onSolutionSuccess={() => fetchLeaderboard()}
                             />
                         </div>
-                        <OutputArea hints={[]}/>
+                        <OutputArea hints={problemData?.hints || []}/>
                     </div>
                 </div>
             </main>
