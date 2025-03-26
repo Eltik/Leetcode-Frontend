@@ -6,7 +6,22 @@ import QuestionArea from "~/components/question-area";
 import InputArea from "~/components/input-area";
 import { useState, useEffect } from "react";
 
-const HomePage = ({ problemData, leaderboardData }) => {
+// Add these interfaces above the HomePage component
+interface ProblemData {
+  name: string;
+  description: string;
+  parameter: string;
+  providedCode: string;
+  testcase: string;
+  solution: any;
+}
+
+interface HTTPFETCHSTUFF {
+  problemData: ProblemData | null;
+  leaderboardData: any[];
+}
+
+const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
     const [name, setName] = useState('');
     const [isNameEntered, setIsNameEntered] = useState(false);
 
