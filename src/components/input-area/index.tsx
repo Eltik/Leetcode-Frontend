@@ -54,13 +54,25 @@ export default function InputArea({ problemData, name, onSolutionSuccess }: Ques
         value={code}
         onChange={(e) => setCode(e.target.value)}
       />
-      <Button 
-        className="mt-4 bg-gray-600 hover:bg-gray-600"
-        onClick={handleSubmit}
-      >
-        Submit Solution
-      </Button>
-      <h1>Output: {output}</h1>
+      <div className="mt-4 flex items-start justify-between">
+        <Button 
+          className="bg-gray-600 hover:bg-gray-700 transition-colors"
+          onClick={handleSubmit}
+        >
+          Submit Solution
+        </Button>
+        <div className="flex-1 ml-4">
+          <div className={`p-4 rounded-md ${
+            output.includes('Congratulations') 
+              ? 'bg-green-900/30 border border-green-700' 
+              : output 
+                ? 'bg-red-900/30 border border-red-700'
+                : 'hidden'
+          }`}>
+            <p className="font-mono">{output}</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

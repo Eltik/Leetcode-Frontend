@@ -2,33 +2,46 @@ import React from 'react';
 
 interface LeaderboardProps {
     name: string;
-    leaderboardData: Array<{ rank: number; name: string; }>;
+    leaderboardData: Array<{
+        name: string;
+        score: number;
+        medal: string | null;
+        position: number;
+        highlight: boolean;
+    }>;
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ leaderboardData = [] }) => {
+const Leaderboard = ({ name, leaderboardData }: LeaderboardProps) => {
     return (
-        <div className="min-h-screen flex flex-col items-center">
-            <div className="bg-[#2F2F2F] text-white text-sm rounded-md p-5 border border-[#3C3C3C] w-auto max-w-full overflow-auto" style={{ minHeight: '200px' }}>
-                <h1 className="text-2xl font-bold">Leaderboard</h1>
-                <br />
-                <hr className="border-2 rounded-full" />
-                <br />
-                <table className="w-full">
-                    <thead>
-                        <tr className="text-[#B7B7B7]">
-                            <th className="p-3">Rank</th>
-                            <th className="p-3">Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {leaderboardData.map((entry) => (
-                            <tr key={entry.rank} className="bg-[#3C3C3C] rounded-md">
-                                <td className="p-3">{entry.rank}</td>
-                                <td className="p-3">{entry.name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+        <div className="text-white">
+            <h2 className="text-xl font-bold mb-4">Leaderboard</h2>
+            <div className="space-y-2">
+                {leaderboardData.map((entry) => (
+                    <div
+                        key={entry.name}
+                        className={`p-2 rounded ${
+                            entry.highlight
+                                ? 'bg-blue-500/20 border border-blue-500'
+                                : 'bg-gray-800'
+                        } ${
+                            entry.position === 1
+                                ? 'bg-yellow-500/20'
+                                : entry.position === 2
+                                ? 'bg-gray-400/20'
+                                : entry.position === 3
+                                ? 'bg-orange-700/20'
+                                : ''
+                        }`}
+                    >
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                                <span className="w-6">{entry.medal || entry.position}</span>
+                                <span>{entry.name}</span>
+                            </div>
+                            <span>{entry.score}</span>
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
     );

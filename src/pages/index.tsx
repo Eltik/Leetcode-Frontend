@@ -25,6 +25,15 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
     const [name, setName] = useState('');
     const [isNameEntered, setIsNameEntered] = useState(false);
 
+    const formatLeaderboardData = (data: any[]) => {
+        return data.map((entry, index) => ({
+            ...entry,
+            medal: index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : null,
+            position: index + 1,
+            highlight: entry.name === name
+        }));
+    };
+
     const updateLeaderboard = async (playerName: string) => {
         try {
             await fetch('https://backendtest-indol.vercel.app/api/leaderboard', {
@@ -65,7 +74,7 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
                     <link rel="icon" href="/favicon.ico" />
                 </Head>
                 <main className="flex min-h-screen items-center justify-center bg-[#3C3C3C]">
-                    <form onSubmit={handleSubmitName} className="flex flex-col items-center gap-4">
+                    <form onSubmit={handleSubmitName} className="flex flex-col items-center gap-4 bg-[#2F2F2F] p-8 rounded-lg border border-[#4C4C4C]">
                         <h1 className="text-2xl text-white font-bold mb-4">Welcome to Leetcode Club</h1>
                         <input
                             type="text"
@@ -94,18 +103,30 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
                 <meta name="description" content="App for practicing Leetcode problems" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <main className="flex min-h-screen items-start justify-center bg-[#3C3C3C]">
-                <div className="flex-col mt-10">
-                    <Leaderboard name={name} leaderboardData={leaderboardData} />
-                </div>
-                <div className="mt-4 mb-8">
-                    <h1 className="text-2xl text-white font-bold mb-4 text-center">Welcome {name}!</h1>
-                    <QuestionArea problemData={problemData} />
-                    <InputArea 
-                        problemData={problemData} 
+            <main className="flex min-h-screen bg-[#3C3C3C]">
+                {/* Fixed Leaderboard */}
+                <div className="fixed left-0 top-0 h-screen w-80 p-6 bg-[#2F2F2F] border-r border-[#4C4C4C]">
+                    <Leaderboard 
                         name={name} 
-                        onSolutionSuccess={() => updateLeaderboard(name)}
+                        leaderboardData={formatLeaderboardData(leaderboardData)} 
                     />
+                </div>
+                
+                {/* Main Content Area */}
+                <div className="flex-1 ml-80 p-8">
+                    <h1 className="text-4xl text-white font-bold mb-8 text-center">
+                        Welcome {name}! 🚀
+                    </h1>
+                    <div className="max-w-4xl mx-auto">
+                        <QuestionArea problemData={problemData} />
+                        <div className="mt-6">
+                            <InputArea 
+                                problemData={problemData} 
+                                name={name} 
+                                onSolutionSuccess={() => updateLeaderboard(name)}
+                            />
+                        </div>
+                    </div>
                 </div>
             </main>
         </>

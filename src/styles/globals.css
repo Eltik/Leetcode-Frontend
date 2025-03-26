@@ -64,3 +64,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+html,
+body {
+  background-color: #3C3C3C;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
