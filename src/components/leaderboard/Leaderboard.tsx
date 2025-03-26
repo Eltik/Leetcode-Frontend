@@ -30,7 +30,7 @@ const Leaderboard = ({ name, leaderboardData }: LeaderboardProps) => {
                                 ? 'bg-gray-400/20'
                                 : entry.position === 3
                                 ? 'bg-orange-700/20'
-                                : ''
+                                : 'bg-black'
                         }`}
                     >
                         <div className="flex items-center justify-between">

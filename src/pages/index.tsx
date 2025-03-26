@@ -6,7 +6,6 @@ import QuestionArea from "~/components/question-area";
 import InputArea from "~/components/input-area";
 import { useState, useEffect } from "react";
 
-// Add these interfaces above the HomePage component
 interface ProblemData {
   name: string;
   description: string;
@@ -21,9 +20,10 @@ interface HTTPFETCHSTUFF {
   leaderboardData: any[];
 }
 
-const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
+const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTPFETCHSTUFF) => {
     const [name, setName] = useState('');
     const [isNameEntered, setIsNameEntered] = useState(false);
+    const [leaderboardData, setLeaderboardData] = useState(initialLeaderboardData);
 
     const formatLeaderboardData = (data: any[]) => {
         return data.map((entry, index) => ({
@@ -34,19 +34,23 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
         }));
     };
 
-    const updateLeaderboard = async (playerName: string) => {
+    const fetchLeaderboard = async () => {
         try {
-            await fetch('https://backendtest-indol.vercel.app/api/leaderboard', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ name: playerName }),
-            });
+            const response = await fetch('https://backendtest-indol.vercel.app/api/leaderboard');
+            const data = await response.json();
+            setLeaderboardData(data);
         } catch (error) {
-            console.error('Failed to update leaderboard:', error);
+            console.error('Failed to fetch leaderboard:', error);
         }
     };
+
+    useEffect(() => {
+        if (isNameEntered) {
+            fetchLeaderboard();
+            const interval = setInterval(fetchLeaderboard, 5000);
+            return () => clearInterval(interval);
+        }
+    }, [isNameEntered]);
 
     useEffect(() => {
         const savedName = localStorage.getItem('userName');
@@ -113,7 +117,7 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
                 </div>
                 
                 {/* Main Content Area */}
-                <div className="flex-1 ml-80 p-8">
+                <div className="flex-1 ml-80 p-8 relative">
                     <h1 className="text-4xl text-white font-bold mb-8 text-center">
                         Welcome {name}! 🚀
                     </h1>
@@ -123,9 +127,10 @@ const HomePage = ({ problemData, leaderboardData }: HTTPFETCHSTUFF) => {
                             <InputArea 
                                 problemData={problemData} 
                                 name={name} 
-                                onSolutionSuccess={() => updateLeaderboard(name)}
+                                onSolutionSuccess={() => fetchLeaderboard()}
                             />
                         </div>
+                        <OutputArea hints={[]}/>
                     </div>
                 </div>
             </main>
