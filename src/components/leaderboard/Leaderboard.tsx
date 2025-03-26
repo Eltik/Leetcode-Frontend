@@ -1,14 +1,11 @@
 import React from 'react';
 
-const Leaderboard = () => {
-    const data = [
-        { rank: 1, name: 'Alice' },
-        { rank: 2, name: 'Bob' },
-        { rank: 3, name: 'Charlie' },
-        { rank: 4, name: 'Diana' },
-        { rank: 5, name: 'Eve' },
-    ];
+interface LeaderboardProps {
+    name: string;
+    leaderboardData: Array<{ rank: number; name: string; }>;
+}
 
+const Leaderboard: React.FC<LeaderboardProps> = ({ leaderboardData = [] }) => {
     return (
         <div className="min-h-screen flex flex-col items-center">
             <div className="bg-[#2F2F2F] text-white text-sm rounded-md p-5 border border-[#3C3C3C] w-auto max-w-full overflow-auto" style={{ minHeight: '200px' }}>
@@ -24,7 +21,7 @@ const Leaderboard = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {data.map((entry) => (
+                        {leaderboardData.map((entry) => (
                             <tr key={entry.rank} className="bg-[#3C3C3C] rounded-md">
                                 <td className="p-3">{entry.rank}</td>
                                 <td className="p-3">{entry.name}</td>

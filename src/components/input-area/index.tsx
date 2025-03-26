@@ -10,15 +10,17 @@ interface QuestionAreaProps {
     testcase: string;
     solution: any;
   } | null;
+  name: string;
+  onSolutionSuccess: () => void;
 }
 
-export default function InputArea({ problemData }: QuestionAreaProps) {
+export default function InputArea({ problemData, name, onSolutionSuccess }: QuestionAreaProps) {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
 
   console.log('InputArea problemData:', problemData);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log('Submit clicked, problemData:', problemData);
     if (!problemData) {
       setOutput("Data not found");
@@ -34,7 +36,7 @@ export default function InputArea({ problemData }: QuestionAreaProps) {
       const result = eval(fullCode);
       if (result === problemData.solution) {
         setOutput(`Congratulations! Your solution is correct!`);
-        
+        onSolutionSuccess();
       } else {
         setOutput("Incorrect solution, try again!");
       }

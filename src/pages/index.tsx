@@ -4,15 +4,39 @@ import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/tes
 import Leaderboard from "~/components/leaderboard/Leaderboard";
 import QuestionArea from "~/components/question-area";
 import InputArea from "~/components/input-area";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const HomePage = ({ problemData }) => {
-    const [name, setName] = useState("");
+const HomePage = ({ problemData, leaderboardData }) => {
+    const [name, setName] = useState('');
     const [isNameEntered, setIsNameEntered] = useState(false);
+
+    const updateLeaderboard = async (playerName: string) => {
+        try {
+            await fetch('https://backendtest-indol.vercel.app/api/leaderboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: playerName }),
+            });
+        } catch (error) {
+            console.error('Failed to update leaderboard:', error);
+        }
+    };
+
+    useEffect(() => {
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            setName(savedName);
+            setIsNameEntered(true);
+        }
+    }, []);
 
     const handleSubmitName = (e: React.FormEvent) => {
         e.preventDefault();
         if (name.trim()) {
+            // Save name to localStorage
+            localStorage.setItem('userName', name.trim());
             setIsNameEntered(true);
         }
     };
@@ -57,12 +81,16 @@ const HomePage = ({ problemData }) => {
             </Head>
             <main className="flex min-h-screen items-start justify-center bg-[#3C3C3C]">
                 <div className="flex-col mt-10">
-                    <Leaderboard name={name} />
+                    <Leaderboard name={name} leaderboardData={leaderboardData} />
                 </div>
                 <div className="mt-4 mb-8">
                     <h1 className="text-2xl text-white font-bold mb-4 text-center">Welcome {name}!</h1>
                     <QuestionArea problemData={problemData} />
-                    <InputArea problemData={problemData} name={name} />
+                    <InputArea 
+                        problemData={problemData} 
+                        name={name} 
+                        onSolutionSuccess={() => updateLeaderboard(name)}
+                    />
                 </div>
             </main>
         </>
@@ -71,19 +99,28 @@ const HomePage = ({ problemData }) => {
 
 export async function getServerSideProps() {
     try {
-        const response = await fetch('https://backendtest-indol.vercel.app/api/exampleProblem');
-        const data = await response.json();
+        const [problemResponse, leaderboardResponse] = await Promise.all([
+            fetch('https://backendtest-indol.vercel.app/api/exampleProblem'),
+            fetch('https://backendtest-indol.vercel.app/api/leaderboard')
+        ]);
+
+        const [problemData, leaderboardData] = await Promise.all([
+            problemResponse.json(),
+            leaderboardResponse.json()
+        ]);
         
         return {
             props: {
-                problemData: data.exampleProblem
+                problemData: problemData.exampleProblem,
+                leaderboardData: leaderboardData
             }
         };
     } catch (error) {
-        console.error('Failed to fetch problem data:', error);
+        console.error('Failed to fetch data:', error);
         return {
             props: {
-                problemData: null
+                problemData: null,
+                leaderboardData: []
             }
         };
     }
