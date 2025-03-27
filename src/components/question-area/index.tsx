@@ -7,7 +7,6 @@ interface QuestionAreaProps {
         name: string;
         description: string;
         parameter: string;
-        providedCode: string;
     } | null;
 }
 
@@ -27,13 +26,6 @@ export default function QuestionArea({ problemData }: QuestionAreaProps) {
                     <div className="mt-6">
                         <h3 className="font-semibold text-lg mb-2">Parameters:</h3>
                         <p>{problemData?.parameter || 'Loading...'}</p>
-                    </div>
-
-                    <div className="mt-6">
-                        <h3 className="font-semibold text-lg mb-2">Provided Code:</h3>
-                        <pre className="bg-[#2F2F2F] p-3 rounded-md">
-                            <code>{problemData?.providedCode || 'Loading...'}</code>
-                        </pre>
                     </div>
                 </div>
             </div>

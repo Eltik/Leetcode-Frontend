@@ -6,7 +6,6 @@ interface QuestionAreaProps {
     name: string;
     description: string;
     parameter: string;
-    providedCode: string;
     testcase: string;
     solution: any;
   } | null;
@@ -29,7 +28,6 @@ export default function InputArea({ problemData, name, onSolutionSuccess }: Ques
 
     try {
       const fullCode = `(() => {
-        ${problemData.providedCode}
         ${code}
         ${problemData.testcase}
       })()`;

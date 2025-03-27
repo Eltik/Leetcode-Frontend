@@ -11,7 +11,6 @@ interface ProblemData {
   description: string;
   parameter: string;
   hints: string[];
-  providedCode: string;
   testcase: string;
   solution: any;
 }
@@ -26,6 +25,28 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
     const [isNameEntered, setIsNameEntered] = useState(false);
     const [leaderboardData, setLeaderboardData] = useState(initialLeaderboardData);
 
+    const updateLeaderboard = async (playerName: string) => {
+        try {
+            await fetch('https://backendtest-indol.vercel.app/api/leaderboard', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name: playerName }),
+            });
+        } catch (error) {
+            console.error('Failed to update leaderboard:', error);
+        }
+    };
+
+    useEffect(() => {
+        const savedName = localStorage.getItem('userName');
+        if (savedName) {
+            setName(savedName);
+            setIsNameEntered(true);
+        }
+    }, []);
+
     const formatLeaderboardData = (data: any[]) => {
         return data.map((entry, index) => ({
             ...entry,
@@ -36,10 +57,13 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
     };
 
     const fetchLeaderboard = async () => {
+        console.log('Starting fetchLeaderboard...');
         try {
             const response = await fetch('https://backendtest-indol.vercel.app/api/leaderboard');
             const data = await response.json();
+            console.log('Leaderboard data received:', data);
             setLeaderboardData(data);
+            console.log('Leaderboard state updated');
         } catch (error) {
             console.error('Failed to fetch leaderboard:', error);
         }
@@ -52,14 +76,6 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
             return () => clearInterval(interval);
         }
     }, [isNameEntered]);
-
-    useEffect(() => {
-        const savedName = localStorage.getItem('userName');
-        if (savedName) {
-            setName(savedName);
-            setIsNameEntered(true);
-        }
-    }, []);
 
     const handleSubmitName = (e: React.FormEvent) => {
         e.preventDefault();
@@ -128,7 +144,11 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                             <InputArea 
                                 problemData={problemData} 
                                 name={name} 
-                                onSolutionSuccess={() => fetchLeaderboard()}
+                                onSolutionSuccess={() => {
+                                    console.log("onSolutionSuccess called");
+                                    updateLeaderboard(name);
+                                    fetchLeaderboard();
+                                }}
                             />
                         </div>
                         <OutputArea hints={problemData?.hints || []}/>
