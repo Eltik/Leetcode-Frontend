@@ -11,9 +11,10 @@ interface QuestionAreaProps {
   } | null;
   name: string;
   onSolutionSuccess: () => void;
+  onSubmitCode: (code: string) => Promise<string>;
 }
 
-export default function InputArea({ problemData, name, onSolutionSuccess }: QuestionAreaProps) {
+export default function InputArea({ problemData, name, onSolutionSuccess, onSubmitCode }: QuestionAreaProps) {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
 
@@ -27,11 +28,7 @@ export default function InputArea({ problemData, name, onSolutionSuccess }: Ques
     }
 
     try {
-      const fullCode = `(() => {
-        ${code}
-        ${problemData.testcase}
-      })()`;
-      const result = eval(fullCode);
+      const result = await onSubmitCode(code);
       if (result === problemData.solution) {
         setOutput(`Congratulations! Your solution is correct!`);
         onSolutionSuccess();

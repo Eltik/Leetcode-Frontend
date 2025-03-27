@@ -22,6 +22,7 @@ interface HTTPFETCHSTUFF {
 
 const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTPFETCHSTUFF) => {
     const [name, setName] = useState('');
+    const [language, setLanguage] = useState('javascript');
     const [isNameEntered, setIsNameEntered] = useState(false);
     const [leaderboardData, setLeaderboardData] = useState(initialLeaderboardData);
 
@@ -41,9 +42,13 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
 
     useEffect(() => {
         const savedName = localStorage.getItem('userName');
+        const savedLanguage = localStorage.getItem('userLanguage');
         if (savedName) {
             setName(savedName);
             setIsNameEntered(true);
+        }
+        if (savedLanguage) {
+            setLanguage(savedLanguage);
         }
     }, []);
 
@@ -80,9 +85,29 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
     const handleSubmitName = (e: React.FormEvent) => {
         e.preventDefault();
         if (name.trim()) {
-            // Save name to localStorage
             localStorage.setItem('userName', name.trim());
+            localStorage.setItem('userLanguage', language);
             setIsNameEntered(true);
+        }
+    };
+
+    const handleSubmitCode = async (code: string) => {
+        try {
+            const response = await fetch('https://backendtest-indol.vercel.app/api/executor', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    submission: code,
+                    language: language
+                }),
+            });
+            const data = await response.json();
+            return data.results;
+        } catch (error) {
+            console.error('Failed to submit code:', error);
+            throw error;
         }
     };
 
@@ -105,6 +130,16 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                             className="px-4 py-2 rounded-md"
                             required
                         />
+                        <select
+                            value={language}
+                            onChange={(e) => setLanguage(e.target.value)}
+                            className="px-4 py-2 rounded-md w-full"
+                        >
+                            <option value="javascript">JavaScript</option>
+                            <option value="python">Python</option>
+                            <option value="java">Java</option>
+                            <option value="c++">C++</option>
+                        </select>
                         <button
                             type="submit"
                             className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
@@ -149,6 +184,7 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                                     updateLeaderboard(name);
                                     fetchLeaderboard();
                                 }}
+                                onSubmitCode={handleSubmitCode}
                             />
                         </div>
                         <OutputArea hints={problemData?.hints || []}/>
