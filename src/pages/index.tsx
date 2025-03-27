@@ -133,12 +133,21 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                         <select
                             value={language}
                             onChange={(e) => setLanguage(e.target.value)}
-                            className="px-4 py-2 rounded-md w-full"
+                            className="w-full px-4 py-2 rounded-md bg-[#363636] text-white border border-[#4C4C4C] 
+                                       cursor-pointer appearance-none hover:border-[#6C6C6C] transition-colors duration-200
+                                       focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                            style={{
+                                backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='white'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+                                backgroundRepeat: 'no-repeat',
+                                backgroundPosition: 'right 0.75rem center',
+                                backgroundSize: '1.25rem',
+                                paddingRight: '2.5rem'
+                            }}
                         >
-                            <option value="javascript">JavaScript</option>
-                            <option value="python">Python</option>
-                            <option value="java">Java</option>
-                            <option value="c++">C++</option>
+                            <option value="javascript" className="bg-[#363636]">Javascript</option>
+                            <option value="python" className="bg-[#363636]">Python</option>
+                            <option value="java" className="bg-[#363636]">Java</option>
+                            <option value="c++" className="bg-[#363636]">C++</option>
                         </select>
                         <button
                             type="submit"
@@ -170,9 +179,16 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                 
                 {/* Main Content Area */}
                 <div className="flex-1 ml-80 p-8 relative">
-                    <h1 className="text-4xl text-white font-bold mb-8 text-center">
-                        Welcome {name}! 🚀
-                    </h1>
+                    <div className="text-center mb-8">
+                        <h1 className="text-4xl text-white font-bold">
+                            Welcome {name}! 🚀
+                        </h1>
+                        <div className="inline-block bg-gradient-to-r from-[#2F2F2F] to-[#363636] px-6 py-2 rounded-full mt-4 border border-[#4C4C4C] shadow-lg hover:shadow-xl transition-all duration-300">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-green-500 font-bold tracking-wider">
+                                CODING IN {language.toUpperCase()}
+                            </span>
+                        </div>
+                    </div>
                     <div className="max-w-4xl mx-auto">
                         <QuestionArea problemData={problemData} />
                         <div className="mt-6">
