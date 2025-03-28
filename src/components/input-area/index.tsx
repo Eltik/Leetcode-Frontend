@@ -7,7 +7,7 @@ interface QuestionAreaProps {
     description: string;
     parameter: string;
     testcase: string;
-    solution: any;
+    solution: string;
   } | null;
   name: string;
   onSolutionSuccess: () => void;

@@ -35,7 +35,7 @@ const Leaderboard = ({ name, leaderboardData }: LeaderboardProps) => {
                     >
                         <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                                <span className="w-6">{entry.medal || entry.position}</span>
+                                <span className="w-6">{entry.medal ?? entry.position}</span>
                                 <span>{entry.name}</span>
                             </div>
                             <span>{entry.score}</span>

@@ -1,6 +1,5 @@
 import Head from "next/head"
 import OutputArea from "~/components/output-area"
-import { ScrollAreaHorizontalDemo, TabsDemo } from "~/components/output-area/testing";
 import Leaderboard from "~/components/leaderboard/Leaderboard";
 import QuestionArea from "~/components/question-area";
 import InputArea from "~/components/input-area";
@@ -12,12 +11,20 @@ interface ProblemData {
   parameter: string;
   hints: string[];
   testcase: string;
-  solution: any;
+  solution: string;
+}
+
+interface LeaderboardEntry {
+  name: string;
+  score: number;
+  medal: string | null;
+  position: number;
+  highlight: boolean;
 }
 
 interface HTTPFETCHSTUFF {
   problemData: ProblemData | null;
-  leaderboardData: any[];
+  leaderboardData: LeaderboardEntry[];
 }
 
 const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTPFETCHSTUFF) => {
@@ -52,7 +59,7 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
         }
     }, []);
 
-    const formatLeaderboardData = (data: any[]) => {
+    const formatLeaderboardData = (data: LeaderboardEntry[]): LeaderboardEntry[] => {
         return data.map((entry, index) => ({
             ...entry,
             medal: index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : null,
@@ -65,8 +72,7 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
         console.log('Starting fetchLeaderboard...');
         try {
             const response = await fetch('https://backendtest-indol.vercel.app/api/leaderboard');
-            const data = await response.json();
-            console.log('Leaderboard data received:', data);
+            const data = (await response.json()) as LeaderboardEntry[];
             setLeaderboardData(data);
             console.log('Leaderboard state updated');
         } catch (error) {
@@ -76,8 +82,10 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
 
     useEffect(() => {
         if (isNameEntered) {
-            fetchLeaderboard();
-            const interval = setInterval(fetchLeaderboard, 5000);
+            void fetchLeaderboard();
+            const interval = setInterval(() => {
+                void fetchLeaderboard();
+            }, 5000);
             return () => clearInterval(interval);
         }
     }, [isNameEntered]);
@@ -91,7 +99,7 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
         }
     };
 
-    const handleSubmitCode = async (code: string) => {
+    const handleSubmitCode = async (code: string): Promise<string> => {
         try {
             const response = await fetch('https://backendtest-indol.vercel.app/api/executor', {
                 method: 'POST',
@@ -103,11 +111,11 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                     language: language
                 }),
             });
-            const data = await response.json();
+            const data = await response.json() as { results: string };
             return data.results;
         } catch (error) {
             console.error('Failed to submit code:', error);
-            throw error;
+            return '';
         }
     };
 
@@ -197,13 +205,13 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
                                 name={name} 
                                 onSolutionSuccess={() => {
                                     console.log("onSolutionSuccess called");
-                                    updateLeaderboard(name);
-                                    fetchLeaderboard();
+                                    void updateLeaderboard(name);
+                                    void fetchLeaderboard();
                                 }}
                                 onSubmitCode={handleSubmitCode}
                             />
                         </div>
-                        <OutputArea hints={problemData?.hints || []}/>
+                        <OutputArea hints={problemData?.hints ?? []}/>
                     </div>
                 </div>
             </main>
@@ -211,22 +219,20 @@ const HomePage = ({ problemData, leaderboardData: initialLeaderboardData }: HTTP
     );
 };
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
     try {
         const [problemResponse, leaderboardResponse] = await Promise.all([
             fetch('https://backendtest-indol.vercel.app/api/exampleProblem'),
             fetch('https://backendtest-indol.vercel.app/api/leaderboard')
         ]);
 
-        const [problemData, leaderboardData] = await Promise.all([
-            problemResponse.json(),
-            leaderboardResponse.json()
-        ]);
+        const problemData = await problemResponse.json() as { exampleProblem: ProblemData };
+        const leaderboardData = await leaderboardResponse.json() as LeaderboardEntry[];
         
         return {
             props: {
                 problemData: problemData.exampleProblem,
-                leaderboardData: leaderboardData
+                leaderboardData
             }
         };
     } catch (error) {
@@ -238,6 +244,6 @@ export async function getServerSideProps() {
             }
         };
     }
-}
+};
 
 export default HomePage;
